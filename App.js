@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-// Sample tech news data
 const TECH_NEWS = [
   {
     id: 1,
@@ -30,9 +30,20 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [searchText, setSearchText] = useState('');
 
+  const backgroundColor = darkMode ? '#1a1a1a' : '#f5f5f5';
+  const textColor = darkMode ? '#ffffff' : '#000000';
+
   return (
-    <View style={styles.container}>
-      {/* Components will be added in next steps */}
+    <View style={[styles.container, { backgroundColor }]}>
+      <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
+      
+      {/* HEADER */}
+      <View style={styles.header}>
+        <Text style={[styles.logo, { color: textColor }]}>TechFeed</Text>
+        <View style={styles.headerIcons}>
+          <Ionicons name="notifications-outline" size={24} color={textColor} />
+        </View>
+      </View>
     </View>
   );
 }
@@ -40,6 +51,22 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 50,
+    paddingBottom: 12,
+  },
+  logo: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
   },
 });
