@@ -214,8 +214,8 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
   card: {
-    borderRadius: 12,
-    marginBottom: 16,
+    borderRadius: 23,
+    marginBottom: 20,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -227,12 +227,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 12,
+    padding: 15,
   },
   sourceInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 12,
   },
   sourceAvatar: {
     width: 36,
@@ -244,10 +244,10 @@ const styles = StyleSheet.create({
   sourceAvatarText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 20,
   },
   sourceName: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
   },
   postImage: {
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   captionText: {
-    fontSize: 15,
+    fontSize: 16,
     lineHeight: 20,
   },
   emptyState: {
