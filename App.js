@@ -41,11 +41,21 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [searchText, setSearchText] = useState('');
 
+  // Toggle like on a post
+  const toggleLike = (id) => {
+    setPosts(
+      posts.map((post) =>
+        post.id === id
+          ? { ...post, liked: !post.liked, likes: post.liked ? post.likes - 1 : post.likes + 1 }
+          : post
+      )
+    );
+  };
+
   const clearSearch = () => {
     setSearchText('');
   };
 
-  // Filter posts based on search text
   const filteredPosts = posts.filter((post) =>
     post.title.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -91,33 +101,75 @@ export default function App() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.feedContent}
       >
-        {filteredPosts.map((post) => (
-          <View key={post.id} style={[styles.card, { backgroundColor: cardBackground }]}>
-            {/* Card Header */}
-            <View style={styles.cardHeader}>
-              <View style={styles.sourceInfo}>
-                <View style={[styles.sourceAvatar, { backgroundColor: post.sourceColor }]}>
-                  <Text style={styles.sourceAvatarText}>{post.sourceInitial}</Text>
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((post) => (
+            <View key={post.id} style={[styles.card, { backgroundColor: cardBackground }]}>
+              {/* Card Header */}
+              <View style={styles.cardHeader}>
+                <View style={styles.sourceInfo}>
+                  <View style={[styles.sourceAvatar, { backgroundColor: post.sourceColor }]}>
+                    <Text style={styles.sourceAvatarText}>{post.sourceInitial}</Text>
+                  </View>
+                  <Text style={[styles.sourceName, { color: textColor }]}>{post.source}</Text>
                 </View>
-                <Text style={[styles.sourceName, { color: textColor }]}>{post.source}</Text>
+                <Ionicons name="ellipsis-horizontal" size={20} color={subTextColor} />
               </View>
-              <Ionicons name="ellipsis-horizontal" size={20} color={subTextColor} />
-            </View>
 
-            {/* Image */}
-            <Image 
-              source={post.image} 
-              style={styles.postImage} 
-              resizeMode="cover" 
-            />
+              {/* Image */}
+              <Image 
+                source={post.image} 
+                style={styles.postImage} 
+                resizeMode="cover" 
+              />
 
-            {/* Caption */}
-            <View style={styles.caption}>
-              <Text style={[styles.captionText, { color: textColor }]}>{post.title}</Text>
+              {/* Actions */}
+              <View style={styles.actions}>
+                <TouchableOpacity onPress={() => toggleLike(post.id)} style={styles.actionButton}>
+                  <Ionicons
+                    name={post.liked ? 'heart' : 'heart-outline'}
+                    size={26}
+                    color={post.liked ? '#ff3b30' : textColor}
+                  />
+                  <Text style={[styles.likeCount, { color: textColor }]}>{post.likes}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.actionButton}>
+                  <Ionicons name="chatbubble-outline" size={24} color={textColor} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.actionButton}>
+                  <Ionicons name="share-outline" size={24} color={textColor} />
+                </TouchableOpacity>
+              </View>
+
+              {/* Caption */}
+              <View style={styles.caption}>
+                <Text style={[styles.captionText, { color: textColor }]}>{post.title}</Text>
+              </View>
             </View>
+          ))
+        ) : (
+          <View style={styles.emptyState}>
+            <Text style={[styles.emptyText, { color: subTextColor }]}>
+              {`No posts found matching "${searchText}"`}
+            </Text>
           </View>
-        ))}
+        )}
       </ScrollView>
+
+      {/* BOTTOM NAVIGATION */}
+      <View style={[styles.bottomNav, { backgroundColor: cardBackground }]}>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="home" size={28} color="#007AFF" />
+          <Text style={styles.navLabel}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="compass-outline" size={28} color={subTextColor} />
+          <Text style={[styles.navLabel, { color: subTextColor }]}>Explore</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="person-outline" size={28} color={subTextColor} />
+          <Text style={[styles.navLabel, { color: subTextColor }]}>Profile</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -205,11 +257,54 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 250,
   },
+  actions: {
+    flexDirection: 'row',
+    padding: 12,
+    gap: 16,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  likeCount: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
   caption: {
     padding: 12,
+    paddingTop: 0,
   },
   captionText: {
     fontSize: 15,
     lineHeight: 20,
+  },
+  emptyState: {
+    padding: 40,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  navItem: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  navLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#007AFF',
   },
 });
