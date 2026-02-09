@@ -87,12 +87,14 @@ export default function App() {
       <View style={styles.searchContainer}>
         <TextInput
           style={[styles.searchInput, { backgroundColor: cardBackground, color: textColor }]}
-          placeholder="Search tech news..."
+          placeholder="Search tech news.."
           placeholderTextColor={subTextColor}
           value={searchText}
           onChangeText={setSearchText}
         />
-        <Button title="Clear" onPress={clearSearch} color="#007AFF" />
+       <View style={styles.buttonWrapper}>
+    <Button title="Clear" onPress={clearSearch} color="#54d9dd" />
+      </View>
       </View>
 
       {/* SCROLLVIEW WITH POSTS */}
@@ -209,6 +211,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
   },
+  buttonWrapper: {
+  borderRadius: 20,
+  overflow: 'hidden',
+  width: 70,
+},
   feed: {
     flex: 1,
   },
