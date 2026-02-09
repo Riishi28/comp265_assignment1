@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, StatusBar, TextInput, Button, Switch } from 'react-native';
+import { 
+  View, 
+  Text, 
+  Image,
+  ScrollView,
+  StyleSheet, 
+  StatusBar, 
+  TextInput, 
+  Button, 
+  Switch,
+  TouchableOpacity 
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const TECH_NEWS = [
@@ -30,10 +41,14 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  // Function to clear search
   const clearSearch = () => {
     setSearchText('');
   };
+
+  // Filter posts based on search text
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const backgroundColor = darkMode ? '#1a1a1a' : '#f5f5f5';
   const cardBackground = darkMode ? '#2d2d2d' : '#ffffff';
@@ -69,6 +84,40 @@ export default function App() {
         />
         <Button title="Clear" onPress={clearSearch} color="#007AFF" />
       </View>
+
+      {/* SCROLLVIEW WITH POSTS */}
+      <ScrollView 
+        style={styles.feed} 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.feedContent}
+      >
+        {filteredPosts.map((post) => (
+          <View key={post.id} style={[styles.card, { backgroundColor: cardBackground }]}>
+            {/* Card Header */}
+            <View style={styles.cardHeader}>
+              <View style={styles.sourceInfo}>
+                <View style={[styles.sourceAvatar, { backgroundColor: post.sourceColor }]}>
+                  <Text style={styles.sourceAvatarText}>{post.sourceInitial}</Text>
+                </View>
+                <Text style={[styles.sourceName, { color: textColor }]}>{post.source}</Text>
+              </View>
+              <Ionicons name="ellipsis-horizontal" size={20} color={subTextColor} />
+            </View>
+
+            {/* Image */}
+            <Image 
+              source={post.image} 
+              style={styles.postImage} 
+              resizeMode="cover" 
+            />
+
+            {/* Caption */}
+            <View style={styles.caption}>
+              <Text style={[styles.captionText, { color: textColor }]}>{post.title}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -107,5 +156,60 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 16,
     fontSize: 16,
+  },
+  feed: {
+    flex: 1,
+  },
+  feedContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 80,
+  },
+  card: {
+    borderRadius: 12,
+    marginBottom: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+  },
+  sourceInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  sourceAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sourceAvatarText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  sourceName: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  postImage: {
+    width: '100%',
+    height: 250,
+  },
+  caption: {
+    padding: 12,
+  },
+  captionText: {
+    fontSize: 15,
+    lineHeight: 20,
   },
 });
