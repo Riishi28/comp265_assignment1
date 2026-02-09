@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  Image,
-  ScrollView,
-  StyleSheet, 
-  StatusBar, 
-  TextInput, 
-  Button, 
-  Switch,
-  TouchableOpacity 
+import { View,  Text,   Image,  ScrollView,  StyleSheet,   StatusBar,   TextInput,   Button,   Switch,  TouchableOpacity 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -31,7 +21,7 @@ const TECH_NEWS = [
     sourceInitial: 'W',
     sourceColor: '#3498db',
     image: require('./assets/robot.jpg'),
-    likes: 0,
+    likes: 1000,
     liked: false,
   },
 ];
